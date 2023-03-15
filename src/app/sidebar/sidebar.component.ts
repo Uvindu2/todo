@@ -4,6 +4,7 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 import { delay, filter } from 'rxjs/operators';
 import { NavigationEnd, Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { LoginService } from '../login/login.service';
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
@@ -12,7 +13,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 export class SidebarComponent {
   @ViewChild(MatSidenav)
   sidenav!: MatSidenav;
-  constructor(private observer: BreakpointObserver, private router: Router) {}
+  constructor(private observer: BreakpointObserver, private router: Router,private loginService:LoginService) {}
 
   ngAfterViewInit() {
     this.observer
@@ -38,5 +39,14 @@ export class SidebarComponent {
           this.sidenav.close();
         }
       });
+
+
+  }
+
+  logOut(){
+    this.loginService.logOut().subscribe(()=>{
+      alert('Log out');
+    this.router.navigate(['']);     
+    })
   }
 }
