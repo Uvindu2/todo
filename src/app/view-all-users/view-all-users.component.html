@@ -17,7 +17,7 @@
         src="https://source.unsplash.com/c_GmwfHBDzk/200x200"
       />
   
-      <h4 class="name">John Smith</h4>
+      <h4 class="name">{{login.email}}</h4>
       <p class="designation">Software Engineer</p>
   
       <mat-divider></mat-divider>
@@ -46,9 +46,9 @@
   
       <mat-divider></mat-divider>
   
-      <button mat-button class="menu-button" routerLink="/help">
+      <button mat-button class="menu-button" (click)="logOut()" >
         <mat-icon>help</mat-icon>
-        <span>Help</span>
+        <span>Log Out</span>
       </button>
     </mat-sidenav>
     <mat-sidenav-content>

@@ -7,11 +7,14 @@ import { User } from '../Models/user';
   providedIn: 'root'
 })
 export class UserService {
-token:string='16|IqeYcg6Trtm7DqDem7WMAAwBfW9bSptBjFVlaagX';
+session:any=sessionStorage.getItem('token');
+token=this.session.replaceAll('"', '');
+
 head_obj=new HttpHeaders().set("Authorization","Bearer "+this.token);
 
   private url = 'http://127.0.0.1:8000/api/user/';
   private url2='http://127.0.0.1:8000/api/user-profile/'
+  private url3='http://127.0.0.1:8000/api/register/'
 
   constructor(private httpClient: HttpClient) { }
    
@@ -19,7 +22,7 @@ head_obj=new HttpHeaders().set("Authorization","Bearer "+this.token);
     return this.httpClient.get(this.url,{headers:this.head_obj});
   }
   createUser(user:User){
-    return this.httpClient.post(this.url,user);
+    return this.httpClient.post(this.url3,user);
   }
   updateUser(id:any,user:User){
     console.log(this.url+id,user);

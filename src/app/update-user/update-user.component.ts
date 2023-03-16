@@ -3,6 +3,8 @@ import { ActivatedRoute, Route, Router } from '@angular/router';
 import { UserService } from '../services/user.service';
 import { IUser, User } from '../Models/user';
 import { FormBuilder, Validators } from '@angular/forms';
+import { LoginService } from '../login/login.service';
+import { Login } from '../Models/login.model';
 
 @Component({
   selector: 'app-update-user',
@@ -11,8 +13,10 @@ import { FormBuilder, Validators } from '@angular/forms';
 })
 export class UpdateUserComponent implements OnInit {
   user = new User();
+  login=new Login();
+  session: any | null;
 
-  constructor(private router: Router,private route:ActivatedRoute, private userService: UserService, private fb: FormBuilder) { }
+  constructor(private router: Router,private route:ActivatedRoute,private loginService:LoginService, private userService: UserService, private fb: FormBuilder) { }
 
   editForm = this.fb.group({
     name: ['', Validators.required],
@@ -24,7 +28,10 @@ export class UpdateUserComponent implements OnInit {
   });
   ngOnInit() {
 
+    this.session=sessionStorage.getItem('email');
+    this.login.email=this.session.replaceAll('"', '');
 
+    
     this.route.params.subscribe((params) => {
       this.user.id = params['id'];
       this.getUserById(this.user.id);
@@ -66,10 +73,20 @@ export class UpdateUserComponent implements OnInit {
     const user = this.createFrom();
     this.userService.updateUser(this.user.id, user).subscribe(() => {
       alert("Data Updated");
-      
+
       this.router.navigate(['/view-users']);
+      
   
     })
 
+  }
+  
+  logOut(){
+    this.loginService.logOut().subscribe(()=>{
+      alert('Log out');
+      const token=sessionStorage.removeItem('token');
+      console.log(token);
+    this.router.navigate(['']);     
+    })
   }
 }

@@ -8,6 +8,7 @@ import { LoginComponent } from './login/login.component';
 import { ViewProfileComponent } from './view-profile/view-profile.component';
 import { ViewAllUsersComponent } from './view-all-users/view-all-users.component';
 import { UpdateUserComponent } from './update-user/update-user.component';
+import { RegisterUserComponent } from './register-user/register-user.component';
 
 const routes: Routes = [
   { path: 'sidebar', component: SidebarComponent },
@@ -18,6 +19,8 @@ const routes: Routes = [
   { path: 'view-profile', component: ViewProfileComponent },
   { path: 'view-users', component: ViewAllUsersComponent },
   { path: 'update-users/:id', component: UpdateUserComponent },
+  { path: 'register', component: RegisterUserComponent },
+
 
 
 

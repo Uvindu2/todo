@@ -4,6 +4,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import { Subject, filter, takeUntil, take } from 'rxjs';
 import { LoginService } from './login.service';
 import { IUser, User } from '../Models/user';
+import { Login } from '../Models/login.model';
 
 
 
@@ -14,6 +15,7 @@ import { IUser, User } from '../Models/user';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent  {
+  login=new Login();
   user=new User();
   public loginValid = true;
   public email = '';
@@ -47,10 +49,17 @@ export class LoginComponent  {
     }
     console.log(data);
     this.loginService.login(data).subscribe((res)=>{
-      alert(JSON.stringify(res))
+      if(res!=null){
+      this.login=res;
+    
+    sessionStorage.setItem('email',JSON.stringify(this.login.email));
+    sessionStorage.setItem('token',JSON.stringify(this.login.token));
+
       this._router.navigate(['/sidebar']);
-
-
+      }
+      else{
+        alert("invalid email or password")
+      }
     })
   }
   

@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { UserService } from '../services/user.service';
 import { IUser, User } from '../Models/user';
+import { LoginService } from '../login/login.service';
+import { Router } from '@angular/router';
+import { Login } from '../Models/login.model';
 
 @Component({
   selector: 'app-view-profile',
@@ -9,8 +12,10 @@ import { IUser, User } from '../Models/user';
   styleUrls: ['./view-profile.component.scss']
 })
 export class ViewProfileComponent implements OnInit {
+  login=new Login();
+  session: any | null;
 
-  constructor(private fb: FormBuilder, private userService: UserService) { }
+  constructor(private fb: FormBuilder, private userService: UserService,private loginService:LoginService,private router:Router) { }
 
   editForm = this.fb.group({
     id: [''],
@@ -23,6 +28,10 @@ export class ViewProfileComponent implements OnInit {
 
   });
   ngOnInit() {
+
+    
+    this.session=sessionStorage.getItem('email');
+    this.login.email=this.session.replaceAll('"', '');
 
     this.userService.getUserById().subscribe((res) => {
       console.log(res);
@@ -60,10 +69,22 @@ console.log(user);
   save() {
     const user = this.createFrom();
     this.userService.updateUser(user.id, user).subscribe(() => {
+      window.location.reload();
       alert(" Profile Updated");
 
     })
 
+  }
+
+  
+  logOut(){
+    this.loginService.logOut().subscribe(()=>{
+      alert('Log out');
+      const token=sessionStorage.removeItem('token');
+      console.log(token);
+    this.router.navigate(['']);
+    window.location.reload();     
+    })
   }
 }
 
